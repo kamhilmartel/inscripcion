@@ -3,7 +3,11 @@ set -e
 
 cd /var/www/html
 
-echo "Preparing Laravel directories..."
+echo "=== APP ENVIRONMENT ==="
+php -v
+php artisan --version
+
+echo "=== PREPARING LARAVEL DIRECTORIES ==="
 mkdir -p storage/framework/cache
 mkdir -p storage/framework/sessions
 mkdir -p storage/framework/views
@@ -13,20 +17,32 @@ mkdir -p storage/app/public
 
 chmod -R 777 storage bootstrap/cache || true
 
-echo "Installing composer dependencies..."
+echo "=== INSTALLING DEPENDENCIES ==="
 composer install --no-dev --optimize-autoloader
 
-echo "Clearing Laravel caches..."
+echo "=== CLEARING CACHES ==="
 php artisan optimize:clear || true
 
-echo "Creating storage link..."
+echo "=== STORAGE LINK ==="
 php artisan storage:link || true
 
-echo "Running fresh migrations..."
-php artisan migrate:fresh --force
+echo "=== MIGRATION FILES ==="
+ls -la database/migrations || true
 
-echo "Running seeders..."
-php artisan db:seed --force
+echo "=== DB CONNECTION FROM ENV ==="
+php artisan tinker --execute="dump(config('database.default')); dump(config('database.connections.pgsql.database'));"
 
-echo "Starting services..."
+echo "=== MIGRATION STATUS BEFORE ==="
+php artisan migrate:status --database=pgsql || true
+
+echo "=== RUNNING FRESH MIGRATIONS ON PGSQL ==="
+php artisan migrate:fresh --database=pgsql --force -v
+
+echo "=== MIGRATION STATUS AFTER ==="
+php artisan migrate:status --database=pgsql || true
+
+echo "=== RUNNING SEEDERS ON PGSQL ==="
+php artisan db:seed --database=pgsql --force -v
+
+echo "=== STARTING SERVICES ==="
 /start.sh
