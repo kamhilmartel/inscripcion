@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Pago extends Model
+{
+    protected $table = 'pagos';
+
+    protected $fillable = [
+        'alumno_id',
+        'concepto',
+        'monto',
+        'fecha_vencimiento',
+        'fecha_pago',
+        'estado',
+        'comprobante',
+        'observacion',
+    ];
+
+    public function alumno()
+    {
+        return $this->belongsTo(Alumno::class);
+    }
+}
