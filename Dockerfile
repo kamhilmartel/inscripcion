@@ -4,7 +4,14 @@ WORKDIR /var/www/html
 
 COPY . /var/www/html
 
-RUN rm -f /etc/nginx/sites-enabled/default.conf
-COPY .render/nginx/default.conf /etc/nginx/sites-available/default.conf
+# Asegura carpetas
+RUN mkdir -p /var/www/html/.render/scripts /var/www/html/.render/nginx
 
+# Habilita tu config de nginx
+RUN rm -f /etc/nginx/sites-enabled/default.conf
+COPY .render/nginx/default.conf /etc/nginx/sites-enabled/default.conf
+
+# Permiso al script
 RUN chmod +x /var/www/html/.render/scripts/start.sh
+
+EXPOSE 8080
