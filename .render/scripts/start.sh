@@ -25,5 +25,8 @@ php artisan storage:link || true
 echo "Running migrations..."
 php artisan migrate --force
 
+echo "Running seeders..."
+php artisan db:seed --force
+
 echo "Starting services..."
 /start.sh
