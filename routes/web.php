@@ -22,6 +22,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/admin/alumnos', [AlumnoController::class, 'index'])->name('admin.alumnos.index');
     Route::get('/admin/pagos', [PagoController::class, 'index'])->name('admin.pagos.index');
+
+    Route::get('/consulta-pagos', [\App\Http\Controllers\PagoPublicoController::class, 'form'])->name('pagos.consulta.form');
+Route::post('/consulta-pagos', [\App\Http\Controllers\PagoPublicoController::class, 'buscar'])->name('pagos.consulta.buscar');
+Route::post('/consulta-pagos/{pago}/voucher', [\App\Http\Controllers\PagoPublicoController::class, 'subirVoucher'])->name('pagos.consulta.subirVoucher');
 });
 
 require __DIR__.'/auth.php';
