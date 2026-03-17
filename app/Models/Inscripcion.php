@@ -2,23 +2,23 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Alumno;
 
 class Inscripcion extends Model
 {
+    use HasFactory;
+
     protected $table = 'inscripciones';
 
     protected $fillable = [
         'nombres',
         'apellidos',
         'celular',
-        'email',
         'dni',
         'grado_academico',
         'voucher',
         'estado',
-        'observacion',
     ];
 
     public function alumno()
