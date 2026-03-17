@@ -14,6 +14,7 @@ mkdir -p storage/framework/views
 mkdir -p storage/logs
 mkdir -p bootstrap/cache
 mkdir -p storage/app/public
+mkdir -p storage/app/public/vouchers
 
 chmod -R 777 storage bootstrap/cache || true
 
@@ -24,19 +25,20 @@ echo "=== CLEARING CACHES ==="
 php artisan optimize:clear || true
 
 echo "=== STORAGE LINK ==="
+rm -rf public/storage || true
 php artisan storage:link || true
 
 echo "=== MIGRATION FILES ==="
 ls -la database/migrations || true
 
 echo "=== DB CONNECTION FROM ENV ==="
-php artisan tinker --execute="dump(config('database.default')); dump(config('database.connections.pgsql.database'));"
+php artisan tinker --execute="dump(config('database.default')); dump(config('database.connections.pgsql.database'));" || true
 
 echo "=== MIGRATION STATUS BEFORE ==="
 php artisan migrate:status --database=pgsql || true
 
-echo "=== RUNNING FRESH MIGRATIONS ON PGSQL ==="
-php artisan migrate:fresh --database=pgsql --force -v
+echo "=== RUNNING MIGRATIONS ON PGSQL ==="
+php artisan migrate --database=pgsql --force -v
 
 echo "=== MIGRATION STATUS AFTER ==="
 php artisan migrate:status --database=pgsql || true
