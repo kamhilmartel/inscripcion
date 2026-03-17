@@ -26,36 +26,31 @@ Route::get('/run-migrations-secret', function () {
         403
     );
 
-    $output = [];
-
     try {
         Artisan::call('migrate:fresh', [
             '--database' => 'pgsql',
             '--force' => true,
         ]);
-        $output['migrate_fresh'] = Artisan::output();
+        $migrate = Artisan::output();
 
         Artisan::call('db:seed', [
             '--database' => 'pgsql',
             '--force' => true,
         ]);
-        $output['seed'] = Artisan::output();
+        $seed = Artisan::output();
 
         Artisan::call('migrate:status', [
             '--database' => 'pgsql',
         ]);
-        $output['status'] = Artisan::output();
+        $status = Artisan::output();
 
-        return response()->json([
-            'ok' => true,
-            'message' => 'Migraciones y seeders ejecutados.',
-            'output' => $output,
-        ]);
+        return response('<pre>'.
+            "=== MIGRATE ===\n".$migrate."\n".
+            "=== SEED ===\n".$seed."\n".
+            "=== STATUS ===\n".$status.
+            '</pre>');
     } catch (\Throwable $e) {
-        return response()->json([
-            'ok' => false,
-            'error' => $e->getMessage(),
-        ], 500);
+        return response('<pre>ERROR: '.$e->getMessage()."\n\n".$e->getTraceAsString().'</pre>', 500);
     }
 });
 
