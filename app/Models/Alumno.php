@@ -23,4 +23,9 @@ class Alumno extends Model
     {
         return $this->belongsTo(Inscripcion::class);
     }
+    
+    public function pagos()
+{
+    return $this->hasMany(Pago::class);
+}
 }
