@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Pago;
+use App\Models\Alumno;
 
 class PagoController extends Controller
 {
     public function index()
     {
-        $pagos = Pago::with('alumno.inscripcion')->latest()->get();
+        $alumnos = Alumno::with(['inscripcion', 'pagos'])->latest()->get();
 
-        return view('admin.pagos.index', compact('pagos'));
+        return view('admin.pagos.index', compact('alumnos'));
     }
 }

@@ -7,43 +7,50 @@
 
     <section class="panel">
         <h3>Listado general</h3>
-        <p>Historial de conceptos de pago, cuotas y registros financieros del diplomado.</p>
+        <p>Control consolidado de matrícula, pensiones y diploma por alumno.</p>
     </section>
 
     <section class="panel">
-        @if($pagos->count())
+        @if($alumnos->count())
             <div class="table-wrap">
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Alumno</th>
-                            <th>Concepto</th>
-                            <th>Monto</th>
-                            <th>Fecha vencimiento</th>
-                            <th>Fecha pago</th>
-                            <th>Estado</th>
-                            <th>Observación</th>
+                            <th>Matrícula</th>
+                            <th>Pensión 1</th>
+                            <th>Pensión 2</th>
+                            <th>Pensión 3</th>
+                            <th>Pensión 4</th>
+                            <th>Diploma</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($pagos as $pago)
+                        @foreach($alumnos as $alumno)
+                            @php
+                                $pagos = $alumno->pagos->keyBy('concepto');
+
+                                $matricula = $pagos->get('Matrícula');
+                                $p1 = $pagos->get('Pensión 1');
+                                $p2 = $pagos->get('Pensión 2');
+                                $p3 = $pagos->get('Pensión 3');
+                                $p4 = $pagos->get('Pensión 4');
+                                $diploma = $pagos->get('Diploma');
+                            @endphp
+
                             <tr>
-                                <td>{{ $pago->id }}</td>
                                 <td>
-                                    <strong>{{ $pago->alumno->inscripcion->nombres ?? '' }} {{ $pago->alumno->inscripcion->apellidos ?? '' }}</strong><br>
-                                    <small>{{ $pago->alumno->inscripcion->dni ?? 'Sin DNI' }}</small>
+                                    <strong>{{ $alumno->inscripcion->nombres }} {{ $alumno->inscripcion->apellidos }}</strong><br>
+                                    <small>DNI: {{ $alumno->inscripcion->dni }}</small><br>
+                                    <small>Código: {{ $alumno->codigo }}</small>
                                 </td>
-                                <td>{{ $pago->concepto }}</td>
-                                <td>S/ {{ number_format($pago->monto, 2) }}</td>
-                                <td>{{ $pago->fecha_vencimiento ?: 'No definido' }}</td>
-                                <td>{{ $pago->fecha_pago ?: 'No registrado' }}</td>
-                                <td>
-                                    <span class="status status-{{ strtolower($pago->estado) }}">
-                                        {{ $pago->estado }}
-                                    </span>
-                                </td>
-                                <td>{{ $pago->observacion ?: 'Sin observaciones' }}</td>
+
+                                <td>{{ $matricula?->estado ?? '-' }}</td>
+                                <td>{{ $p1?->estado ?? '-' }}</td>
+                                <td>{{ $p2?->estado ?? '-' }}</td>
+                                <td>{{ $p3?->estado ?? '-' }}</td>
+                                <td>{{ $p4?->estado ?? '-' }}</td>
+                                <td>{{ $diploma?->estado ?? '-' }}</td>
                             </tr>
                         @endforeach
                     </tbody>
