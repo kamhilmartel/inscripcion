@@ -47,22 +47,28 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <a href="{{ asset('storage/' . $inscripcion->voucher) }}" target="_blank" class="btn-primary">
-                                        Ver voucher
-                                    </a>
+                                    <a href="{{ route('admin.inscripciones.voucher', $inscripcion) }}" target="_blank" class="btn-primary">
+    Ver voucher
+</a>
                                 </td>
                                 <td>
-                                    <form method="POST" action="{{ route('admin.inscripciones.updateEstado', $inscripcion) }}" class="inline-form">
-                                        @csrf
-                                        @method('PATCH')
-                                        <select name="estado">
-                                            <option value="Pendiente" {{ $inscripcion->estado == 'Pendiente' ? 'selected' : '' }}>Pendiente</option>
-                                            <option value="Validada" {{ $inscripcion->estado == 'Validada' ? 'selected' : '' }}>Validada</option>
-                                            <option value="Observada" {{ $inscripcion->estado == 'Observada' ? 'selected' : '' }}>Observada</option>
-                                        </select>
-                                        <button type="submit" class="btn-primary">Guardar</button>
-                                    </form>
-                                </td>
+    <form method="POST" action="{{ route('admin.inscripciones.updateEstado', $inscripcion) }}" class="inline-form" style="margin-bottom:8px;">
+        @csrf
+        @method('PATCH')
+        <select name="estado">
+            <option value="Pendiente" {{ $inscripcion->estado == 'Pendiente' ? 'selected' : '' }}>Pendiente</option>
+            <option value="Validada" {{ $inscripcion->estado == 'Validada' ? 'selected' : '' }}>Validada</option>
+            <option value="Observada" {{ $inscripcion->estado == 'Observada' ? 'selected' : '' }}>Observada</option>
+        </select>
+        <button type="submit" class="btn-primary">Guardar</button>
+    </form>
+
+    <form method="POST" action="{{ route('admin.inscripciones.destroy', $inscripcion) }}" onsubmit="return confirm('¿Desea eliminar esta inscripción?');">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn-primary" style="background:#c62828;">Eliminar</button>
+    </form>
+</td>
                             </tr>
                         @endforeach
                     </tbody>

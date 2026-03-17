@@ -12,6 +12,11 @@ class InscripcionController extends Controller
         return view('inscripciones.create');
     }
 
+    public function success()
+    {
+        return view('inscripciones.success');
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -35,8 +40,6 @@ class InscripcionController extends Controller
             'estado' => 'Pendiente',
         ]);
 
-        return redirect()
-            ->route('inscripciones.create')
-            ->with('success', 'Tu inscripción fue registrada correctamente.');
+        return redirect()->route('inscripciones.success');
     }
 }
