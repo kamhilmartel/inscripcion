@@ -38,14 +38,14 @@
         }
 
         .topbar-inner{
-    max-width:1320px;
-    margin:0 auto;
-    padding:14px 20px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:14px;
-}
+            max-width:1320px;
+            margin:0 auto;
+            padding:14px 20px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:14px;
+        }
 
         .brand{
             display:flex;
@@ -296,6 +296,52 @@
             padding-left:18px;
         }
 
+        .admin-link{
+            display:inline-block;
+            text-decoration:none;
+            background:#f8fafc;
+            color:var(--azul-oscuro);
+            border:1px solid var(--linea);
+            padding:10px 14px;
+            border-radius:6px;
+            font-size:13px;
+            font-weight:700;
+            transition:.2s ease;
+            white-space:nowrap;
+        }
+
+        .admin-link:hover{
+            background:var(--azul);
+            color:#fff;
+        }
+
+        .access-grid{
+            display:grid;
+            grid-template-columns:repeat(2, 1fr);
+            gap:20px;
+        }
+
+        .access-card{
+            border:1px solid var(--linea);
+            border-radius:8px;
+            padding:22px;
+            background:#f8fafc;
+            box-shadow:var(--shadow);
+        }
+
+        .access-card h3{
+            margin:0 0 10px;
+            color:var(--azul-oscuro);
+            font-size:24px;
+        }
+
+        .access-card p{
+            margin:0 0 16px;
+            color:#374151;
+            line-height:1.7;
+            font-size:15px;
+        }
+
         @media (max-width: 900px){
             .intro-grid{
                 grid-template-columns:1fr;
@@ -313,53 +359,27 @@
                 flex-direction:column;
                 align-items:flex-start;
             }
+
+            .access-grid{
+                grid-template-columns:1fr;
+            }
         }
-
-
-        .topbar-inner{
-    max-width:1320px;
-    margin:0 auto;
-    padding:14px 20px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:14px;
-}
-
-.admin-link{
-    display:inline-block;
-    text-decoration:none;
-    background:#f8fafc;
-    color:var(--azul-oscuro);
-    border:1px solid var(--linea);
-    padding:10px 14px;
-    border-radius:6px;
-    font-size:13px;
-    font-weight:700;
-    transition:.2s ease;
-    white-space:nowrap;
-}
-
-.admin-link:hover{
-    background:var(--azul);
-    color:#fff;
-}
     </style>
 </head>
 <body>
     <header class="topbar">
-    <div class="topbar-inner">
-        <div class="brand">
-            <img src="{{ asset('logo.jpg') }}" alt="Logo">
-            <div class="brand-text">
-                <div class="uni">Universidad Nacional Hermilio Valdizán</div>
-                <div class="unidad">Unidad de Educación a Distancia</div>
+        <div class="topbar-inner">
+            <div class="brand">
+                <img src="{{ asset('logo.jpg') }}" alt="Logo">
+                <div class="brand-text">
+                    <div class="uni">Universidad Nacional Hermilio Valdizán</div>
+                    <div class="unidad">Unidad de Educación a Distancia</div>
+                </div>
             </div>
-        </div>
 
-        <a href="{{ url('/login') }}" class="admin-link">Acceso administrativo</a>
-    </div>
-</header>
+            <a href="{{ url('/login') }}" class="admin-link">Acceso administrativo</a>
+        </div>
+    </header>
 
     <main class="container">
         <div class="section-title">Diplomado</div>
@@ -397,6 +417,30 @@
                             <strong>Inscripción con validación de pago</strong>
                         </div>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="subsection-title">Accesos del participante</div>
+
+        <section class="panel">
+            <div class="access-grid">
+                <div class="access-card">
+                    <h3>Nueva inscripción</h3>
+                    <p>
+                        Si aún no se ha registrado en el diplomado, complete la ficha de inscripción
+                        y adjunte su voucher correspondiente.
+                    </p>
+                    <a href="{{ route('inscripciones.create') }}" class="btn-primary">Ir a inscripción</a>
+                </div>
+
+                <div class="access-card">
+                    <h3>Consulta de pagos</h3>
+                    <p>
+                        Si ya fue validado como alumno, consulte el estado de matrícula, pensiones
+                        y diploma, y suba el voucher correspondiente de cada pago.
+                    </p>
+                    <a href="{{ route('pagos.consulta.form') }}" class="btn-primary">Consultar pagos</a>
                 </div>
             </div>
         </section>
