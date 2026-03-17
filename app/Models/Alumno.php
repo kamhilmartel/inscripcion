@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Alumno extends Model
 {
-    protected $table = 'alumnos';
+    use HasFactory;
 
     protected $fillable = [
         'inscripcion_id',
@@ -19,10 +20,5 @@ class Alumno extends Model
     public function inscripcion()
     {
         return $this->belongsTo(Inscripcion::class);
-    }
-
-    public function pagos()
-    {
-        return $this->hasMany(Pago::class);
     }
 }
