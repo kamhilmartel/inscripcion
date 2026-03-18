@@ -59,10 +59,10 @@ class PagoPublicoController extends Controller
         $ruta = $request->file('voucher_pago')->store('comprobantes-pagos', 'public');
 
         $pago->update([
-            'comprobante' => $ruta,
-            'observacion' => 'Voucher subido por el participante. Pendiente de validación administrativa.',
-        ]);
-
+    'comprobante' => $ruta,
+    'estado' => 'Pendiente',
+    'observacion' => 'Voucher subido por el participante. Pendiente de validación administrativa.',
+]);
         return back()->with('success', 'Voucher subido correctamente. Ahora debe esperar la validación administrativa.');
     }
 }

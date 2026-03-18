@@ -315,12 +315,6 @@
             color:#fff;
         }
 
-        .access-grid{
-            display:grid;
-            grid-template-columns:repeat(2, 1fr);
-            gap:20px;
-        }
-
         .access-card{
             border:1px solid var(--linea);
             border-radius:8px;
@@ -358,10 +352,6 @@
             .topbar-inner{
                 flex-direction:column;
                 align-items:flex-start;
-            }
-
-            .access-grid{
-                grid-template-columns:1fr;
             }
         }
     </style>
@@ -417,30 +407,6 @@
                             <strong>Inscripción con validación de pago</strong>
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="subsection-title">Accesos del participante</div>
-
-        <section class="panel">
-            <div class="access-grid">
-                <div class="access-card">
-                    <h3>Nueva inscripción</h3>
-                    <p>
-                        Si aún no se ha registrado en el diplomado, complete la ficha de inscripción
-                        y adjunte su voucher correspondiente.
-                    </p>
-                    <a href="{{ route('inscripciones.create') }}" class="btn-primary">Ir a inscripción</a>
-                </div>
-
-                <div class="access-card">
-                    <h3>Consulta de pagos</h3>
-                    <p>
-                        Si ya fue validado como alumno, consulte el estado de matrícula, pensiones
-                        y diploma, y suba el voucher correspondiente de cada pago.
-                    </p>
-                    <a href="{{ route('pagos.consulta.form') }}" class="btn-primary">Consultar pagos</a>
                 </div>
             </div>
         </section>
@@ -524,6 +490,20 @@
                     <div class="form-note">Los campos marcados con <strong>*</strong> son obligatorios.</div>
                 </div>
             </form>
+        </section>
+
+        <div class="subsection-title">Consulta de pagos</div>
+
+        <section class="panel">
+            <div class="access-card" style="max-width: 100%;">
+                <h3>Consulta de pagos y subida de vouchers</h3>
+                <p>
+                    Si ya fue validado como alumno, consulte el estado de matrícula, pensiones
+                    y diploma. Desde este apartado también podrá subir el voucher correspondiente
+                    de cada pago realizado.
+                </p>
+                <a href="{{ route('pagos.consulta.form') }}" class="btn-primary">Consultar pagos</a>
+            </div>
         </section>
     </main>
 </body>

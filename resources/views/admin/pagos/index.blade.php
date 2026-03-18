@@ -11,6 +11,10 @@
     </section>
 
     <section class="panel">
+        @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+
         @if($alumnos->count())
             <div class="table-wrap">
                 <table>
@@ -29,13 +33,14 @@
                         @foreach($alumnos as $alumno)
                             @php
                                 $pagos = $alumno->pagos->keyBy('concepto');
-
-                                $matricula = $pagos->get('Matrícula');
-                                $p1 = $pagos->get('Pensión 1');
-                                $p2 = $pagos->get('Pensión 2');
-                                $p3 = $pagos->get('Pensión 3');
-                                $p4 = $pagos->get('Pensión 4');
-                                $diploma = $pagos->get('Diploma');
+                                $conceptos = [
+                                    'Matrícula',
+                                    'Pensión 1',
+                                    'Pensión 2',
+                                    'Pensión 3',
+                                    'Pensión 4',
+                                    'Diploma',
+                                ];
                             @endphp
 
                             <tr>
@@ -45,12 +50,60 @@
                                     <small>Código: {{ $alumno->codigo }}</small>
                                 </td>
 
-                                <td>{{ $matricula?->estado ?? '-' }}</td>
-                                <td>{{ $p1?->estado ?? '-' }}</td>
-                                <td>{{ $p2?->estado ?? '-' }}</td>
-                                <td>{{ $p3?->estado ?? '-' }}</td>
-                                <td>{{ $p4?->estado ?? '-' }}</td>
-                                <td>{{ $diploma?->estado ?? '-' }}</td>
+                                @foreach($conceptos as $concepto)
+                                    @php $pago = $pagos->get($concepto); @endphp
+                                    <td style="min-width:240px;">
+                                        @if($pago)
+                                            <div style="margin-bottom:8px;">
+                                                <strong>S/ {{ number_format($pago->monto, 2) }}</strong>
+                                            </div>
+
+                                            <div style="margin-bottom:8px;">
+                                                <span class="status status-{{ strtolower($pago->estado) }}">
+                                                    {{ $pago->estado }}
+                                                </span>
+                                            </div>
+
+                                            @if($pago->comprobante)
+                                                <div style="margin-bottom:8px;">
+                                                    <a href="{{ route('admin.pagos.comprobante', $pago) }}" target="_blank" class="btn-primary">
+                                                        Ver voucher
+                                                    </a>
+                                                </div>
+                                            @else
+                                                <div style="margin-bottom:8px; font-size:12px; color:#6b7280;">
+                                                    Sin voucher
+                                                </div>
+                                            @endif
+
+                                            <form method="POST" action="{{ route('admin.pagos.update', $pago) }}">
+                                                @csrf
+                                                @method('PATCH')
+
+                                                <div style="margin-bottom:8px;">
+                                                    <select name="estado" style="width:100%;">
+                                                        <option value="Pendiente" {{ $pago->estado === 'Pendiente' ? 'selected' : '' }}>Pendiente</option>
+                                                        <option value="Pagado" {{ $pago->estado === 'Pagado' ? 'selected' : '' }}>Pagado</option>
+                                                        <option value="Vencido" {{ $pago->estado === 'Vencido' ? 'selected' : '' }}>Vencido</option>
+                                                        <option value="Exonerado" {{ $pago->estado === 'Exonerado' ? 'selected' : '' }}>Exonerado</option>
+                                                    </select>
+                                                </div>
+
+                                                <div style="margin-bottom:8px;">
+                                                    <input type="date" name="fecha_pago" value="{{ $pago->fecha_pago }}" style="width:100%;">
+                                                </div>
+
+                                                <div style="margin-bottom:8px;">
+                                                    <textarea name="observacion" rows="2" style="width:100%; border:1px solid #cfd8e3; border-radius:6px; padding:8px;">{{ $pago->observacion }}</textarea>
+                                                </div>
+
+                                                <button type="submit" class="btn-primary">Guardar</button>
+                                            </form>
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                @endforeach
                             </tr>
                         @endforeach
                     </tbody>

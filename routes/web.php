@@ -26,6 +26,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/consulta-pagos', [\App\Http\Controllers\PagoPublicoController::class, 'form'])->name('pagos.consulta.form');
 Route::post('/consulta-pagos', [\App\Http\Controllers\PagoPublicoController::class, 'buscar'])->name('pagos.consulta.buscar');
 Route::post('/consulta-pagos/{pago}/voucher', [\App\Http\Controllers\PagoPublicoController::class, 'subirVoucher'])->name('pagos.consulta.subirVoucher');
+
+Route::get('/admin/pagos/{pago}/comprobante', [PagoController::class, 'showComprobante'])
+    ->name('admin.pagos.comprobante');
+
+Route::patch('/admin/pagos/{pago}', [PagoController::class, 'update'])
+    ->name('admin.pagos.update');
 });
 
 require __DIR__.'/auth.php';
