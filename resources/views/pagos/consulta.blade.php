@@ -296,7 +296,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($pagos as $pago)
+                        @php
+                            $pagosOrdenados = $pagos->sortBy(function ($pago) {
+                                $orden = [
+                                    'Matrícula' => 1,
+                                    'Pensión 1' => 2,
+                                    'Pensión 2' => 3,
+                                    'Pensión 3' => 4,
+                                    'Pensión 4' => 5,
+                                    'Diploma'   => 6,
+                                ];
+
+                                return $orden[$pago->concepto] ?? 99;
+                            });
+                        @endphp
+
+                        @foreach($pagosOrdenados as $pago)
                             <tr>
                                 <td>{{ $pago->concepto }}</td>
                                 <td>S/ {{ number_format($pago->monto, 2) }}</td>
@@ -308,22 +323,33 @@
                                 <td>{{ $pago->fecha_pago ?: 'No registrado' }}</td>
                                 <td>
                                     @if($pago->comprobante)
-                                        Voucher subido
-                                        <div class="mini">Pendiente de revisión administrativa</div>
+                                        @if($pago->estado === 'Pagado')
+                                            Voucher validado
+                                            <div class="mini">Pago aprobado administrativamente</div>
+                                        @else
+                                            Voucher enviado
+                                            <div class="mini">Pendiente de revisión administrativa</div>
+                                        @endif
                                     @else
                                         Sin voucher
                                     @endif
                                 </td>
                                 <td>
-                                    <div class="upload-box">
-                                        <form action="{{ route('pagos.consulta.subirVoucher', $pago) }}" method="POST" enctype="multipart/form-data">
-                                            @csrf
-                                            <input type="hidden" name="dni" value="{{ $inscripcion->dni }}">
-                                            <input type="file" name="voucher_pago" required>
-                                            <div class="mini">JPG, PNG o PDF. Máximo 2 MB.</div>
-                                            <button type="submit" class="btn-primary" style="margin-top:10px;">Subir voucher</button>
-                                        </form>
-                                    </div>
+                                    @if($pago->estado === 'Pagado')
+                                        <span class="mini" style="font-size:13px; color:#166534; font-weight:700;">
+                                            Pago validado. No requiere nuevo voucher.
+                                        </span>
+                                    @else
+                                        <div class="upload-box">
+                                            <form action="{{ route('pagos.consulta.subirVoucher', $pago) }}" method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                <input type="hidden" name="dni" value="{{ $inscripcion->dni }}">
+                                                <input type="file" name="voucher_pago" required>
+                                                <div class="mini">JPG, PNG o PDF. Máximo 2 MB.</div>
+                                                <button type="submit" class="btn-primary" style="margin-top:10px;">Subir voucher</button>
+                                            </form>
+                                        </div>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
