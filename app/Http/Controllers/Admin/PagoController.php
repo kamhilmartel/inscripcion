@@ -20,17 +20,13 @@ class PagoController extends Controller
     }
 
     public function showComprobante(Pago $pago)
-    {
-        if (!$pago->comprobante) {
-            abort(404, 'No hay comprobante registrado.');
-        }
-
-        if (!Storage::disk('public')->exists($pago->comprobante)) {
-            abort(404, 'El comprobante no existe en el servidor.');
-        }
-
-        return response()->file(Storage::disk('public')->path($pago->comprobante));
+{
+    if (!$pago->comprobante) {
+        return back()->with('error', 'No hay comprobante registrado.');
     }
+
+    return redirect()->away($pago->comprobante);
+}
 
     public function update(Request $request, Pago $pago)
     {

@@ -82,17 +82,13 @@ class InscripcionAdminController extends Controller
     }
 
     public function showVoucher(Inscripcion $inscripcion)
-    {
-        if (!$inscripcion->voucher) {
-            abort(404, 'No hay voucher registrado.');
-        }
-
-        if (!Storage::disk('public')->exists($inscripcion->voucher)) {
-            abort(404, 'El voucher no existe en el servidor.');
-        }
-
-        return response()->file(Storage::disk('public')->path($inscripcion->voucher));
+{
+    if (!$inscripcion->voucher) {
+        return back()->with('error', 'No hay voucher registrado.');
     }
+
+    return redirect()->away($inscripcion->voucher);
+}
 
     public function destroy(Inscripcion $inscripcion)
     {

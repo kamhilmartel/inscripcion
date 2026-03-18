@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Alumno;
 use App\Models\Inscripcion;
 use App\Models\Pago;
+use App\Services\SupabaseStorageService;
 use Illuminate\Http\Request;
 
 class PagoPublicoController extends Controller
@@ -25,10 +27,10 @@ class PagoPublicoController extends Controller
             return back()->with('error', 'No se encontró un registro con ese DNI.');
         }
 
-        $alumno = \App\Models\Alumno::with('pagos')->where('inscripcion_id', $inscripcion->id)->first();
+        $alumno = Alumno::with('pagos')->where('inscripcion_id', $inscripcion->id)->first();
 
         if (!$alumno) {
-            return back()->with('error', 'Aún no tienes un registro de alumno validado. Espere la validación de su inscripción.');
+            return back()->with('error', 'Aún no tienes un registro de alumno validado.');
         }
 
         return view('pagos.consulta', [
@@ -39,7 +41,7 @@ class PagoPublicoController extends Controller
         ]);
     }
 
-    public function subirVoucher(Request $request, Pago $pago)
+    public function subirVoucher(Request $request, Pago $pago, SupabaseStorageService $storageService)
     {
         $request->validate([
             'voucher_pago' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
@@ -56,13 +58,14 @@ class PagoPublicoController extends Controller
             return back()->with('error', 'El DNI no coincide con el registro del pago.');
         }
 
-        $ruta = $request->file('voucher_pago')->store('comprobantes-pagos', 'public');
+        $upload = $storageService->upload($request->file('voucher_pago'), 'pagos');
 
         $pago->update([
-    'comprobante' => $ruta,
-    'estado' => 'Pendiente',
-    'observacion' => 'Voucher subido por el participante. Pendiente de validación administrativa.',
-]);
+            'comprobante' => $upload['url'],
+            'estado' => 'Pendiente',
+            'observacion' => 'Voucher subido por el participante. Pendiente de validación administrativa.',
+        ]);
+
         return back()->with('success', 'Voucher subido correctamente. Ahora debe esperar la validación administrativa.');
     }
 }

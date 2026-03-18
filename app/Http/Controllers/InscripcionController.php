@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Inscripcion;
+use App\Services\SupabaseStorageService;
 use Illuminate\Http\Request;
 
 class InscripcionController extends Controller
@@ -17,7 +18,7 @@ class InscripcionController extends Controller
         return view('inscripciones.success');
     }
 
-    public function store(Request $request)
+    public function store(Request $request, SupabaseStorageService $storageService)
     {
         $validated = $request->validate([
             'nombres' => ['required', 'string', 'max:120'],
@@ -28,7 +29,7 @@ class InscripcionController extends Controller
             'voucher' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
         ]);
 
-        $voucherPath = $request->file('voucher')->store('vouchers', 'public');
+        $upload = $storageService->upload($request->file('voucher'), 'inscripciones');
 
         Inscripcion::create([
             'nombres' => $validated['nombres'],
@@ -36,7 +37,7 @@ class InscripcionController extends Controller
             'celular' => $validated['celular'],
             'dni' => $validated['dni'],
             'grado_academico' => $validated['grado_academico'],
-            'voucher' => $voucherPath,
+            'voucher' => $upload['url'],
             'estado' => 'Pendiente',
         ]);
 
