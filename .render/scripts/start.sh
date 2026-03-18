@@ -15,6 +15,10 @@ chmod -R 777 storage bootstrap/cache || true
 
 echo "=== Limpiando cache ==="
 php artisan optimize:clear || true
+php artisan config:clear || true
+php artisan cache:clear || true
+php artisan view:clear || true
+php artisan route:clear || true
 
 echo "=== Storage link ==="
 php artisan storage:link || true
