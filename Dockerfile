@@ -1,17 +1,14 @@
-FROM richarvey/nginx-php-fpm:3.1.6
+FROM webdevops/php-nginx:8.2
 
 WORKDIR /var/www/html
 
 COPY . /var/www/html
 
-# Asegura carpetas
-RUN mkdir -p /var/www/html/.render/scripts /var/www/html/.render/nginx
+COPY .render/nginx/default.conf /opt/docker/etc/nginx/vhost.conf
+COPY .render/scripts/start.sh /start.sh
 
-# Habilita tu config de nginx
-RUN rm -f /etc/nginx/sites-enabled/default.conf
-COPY .render/nginx/default.conf /etc/nginx/sites-enabled/default.conf
-
-# Permiso al script
-RUN chmod +x /var/www/html/.render/scripts/start.sh
+RUN chmod +x /start.sh
 
 EXPOSE 8080
+
+CMD ["/start.sh"]

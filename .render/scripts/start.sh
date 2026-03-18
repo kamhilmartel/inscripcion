@@ -3,6 +3,7 @@ set -e
 
 cd /var/www/html
 
+echo "=== Preparando Laravel ==="
 mkdir -p storage/framework/cache
 mkdir -p storage/framework/sessions
 mkdir -p storage/framework/views
@@ -11,7 +12,11 @@ mkdir -p bootstrap/cache
 
 chmod -R 775 storage bootstrap/cache || true
 
+echo "=== Limpiando cache ==="
 php artisan optimize:clear || true
 
-php-fpm -D
-nginx -g "daemon off;"
+echo "=== Storage link ==="
+php artisan storage:link || true
+
+echo "=== Iniciando servicios ==="
+exec /opt/docker/bin/entrypoint supervisord
