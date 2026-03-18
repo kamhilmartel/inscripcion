@@ -4,6 +4,8 @@ WORKDIR /var/www/html
 
 COPY . /var/www/html
 
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+
 COPY .render/nginx/default.conf /opt/docker/etc/nginx/vhost.conf
 COPY .render/scripts/start.sh /start.sh
 

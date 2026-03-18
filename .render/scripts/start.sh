@@ -18,5 +18,8 @@ php artisan optimize:clear || true
 echo "=== Storage link ==="
 php artisan storage:link || true
 
-echo "=== Iniciando servicios ==="
-exec /opt/docker/bin/entrypoint supervisord
+echo "=== Iniciando php-fpm ==="
+php-fpm -D
+
+echo "=== Iniciando nginx ==="
+nginx -g "daemon off;"
