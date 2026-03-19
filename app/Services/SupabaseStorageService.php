@@ -18,10 +18,5 @@ class SupabaseStorageService
         if (!$baseUrl || !$bucket || !$key) {
             throw new Exception('Faltan variables de entorno de Supabase.');
         }
-
-        $host = parse_url($baseUrl, PHP_URL_HOST);
-        $resolved = gethostbyname($host);
-
-        throw new Exception("Host: {$host} | Resuelto por PHP: {$resolved}");
     }
 }
