@@ -19,31 +19,9 @@ class SupabaseStorageService
             throw new Exception('Faltan variables de entorno de Supabase.');
         }
 
-        $extension = $file->getClientOriginalExtension();
-        $safeName = Str::uuid() . '.' . $extension;
-        $path = $folder . '/' . $safeName;
+        $host = parse_url($baseUrl, PHP_URL_HOST);
+        $resolved = gethostbyname($host);
 
-        $uploadUrl = "{$baseUrl}/storage/v1/object/{$bucket}/{$path}";
-
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $key,
-            'apikey' => $key,
-            'x-upsert' => 'true',
-            'Content-Type' => $file->getMimeType(),
-        ])->withBody(
-            file_get_contents($file->getRealPath()),
-            $file->getMimeType()
-        )->post($uploadUrl);
-
-        if (!$response->successful()) {
-            throw new Exception('Error al subir archivo a Supabase: ' . $response->body());
-        }
-
-        $publicUrl = "{$baseUrl}/storage/v1/object/public/{$bucket}/{$path}";
-
-        return [
-            'path' => $path,
-            'url' => $publicUrl,
-        ];
+        throw new Exception("Host: {$host} | Resuelto por PHP: {$resolved}");
     }
 }
