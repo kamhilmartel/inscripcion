@@ -19,8 +19,6 @@ class SupabaseStorageService
             throw new Exception('Faltan variables de entorno de Supabase.');
         }
 
-        throw new Exception('SUPABASE_URL real en produccion: [' . $baseUrl . ']');
-
         $extension = $file->getClientOriginalExtension();
         $safeName = Str::uuid() . '.' . $extension;
         $path = $folder . '/' . $safeName;
