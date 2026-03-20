@@ -26,7 +26,7 @@
                             <th>Pensión 2</th>
                             <th>Pensión 3</th>
                             <th>Pensión 4</th>
-                            <th>Diploma</th>
+                            <th>Certificacion</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,7 +39,7 @@
                                     'Pensión 2',
                                     'Pensión 3',
                                     'Pensión 4',
-                                    'Diploma',
+                                    'Certificacion',
                                 ];
                             @endphp
 

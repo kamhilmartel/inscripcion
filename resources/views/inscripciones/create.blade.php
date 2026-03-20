@@ -464,6 +464,7 @@
                         <label for="grado_academico">Grado académico<span class="required">*</span></label>
                         <select id="grado_academico" name="grado_academico" required>
                             <option value="">Seleccione una opción</option>
+                            <option value="Bachiller" {{ old('grado_academico') == 'Egresado' ? 'selected' : '' }}>Egresado</option>
                             <option value="Bachiller" {{ old('grado_academico') == 'Bachiller' ? 'selected' : '' }}>Bachiller</option>
                             <option value="Titulado" {{ old('grado_academico') == 'Titulado' ? 'selected' : '' }}>Titulado</option>
                         </select>
