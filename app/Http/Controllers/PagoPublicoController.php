@@ -44,7 +44,7 @@ class PagoPublicoController extends Controller
     public function subirVoucher(Request $request, Pago $pago, SupabaseStorageService $storageService)
     {
         $request->validate([
-            'voucher_pago' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
+            'voucher_pago' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:1024'],
             'dni' => ['required', 'digits:8'],
         ]);
 

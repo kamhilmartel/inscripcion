@@ -345,7 +345,7 @@
                                                 @csrf
                                                 <input type="hidden" name="dni" value="{{ $inscripcion->dni }}">
                                                 <input type="file" name="voucher_pago" required>
-                                                <div class="mini">JPG, PNG o PDF. Máximo 2 MB.</div>
+                                                <div class="mini">JPG, PNG o PDF. Máximo 1 MB.</div>
                                                 <button type="submit" class="btn-primary" style="margin-top:10px;">Subir voucher</button>
                                             </form>
                                         </div>

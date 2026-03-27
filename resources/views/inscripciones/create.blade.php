@@ -473,7 +473,7 @@
                     <div class="field full">
                         <label for="voucher">Voucher de pago<span class="required">*</span></label>
                         <input type="file" id="voucher" name="voucher" accept=".jpg,.jpeg,.png,.pdf" required>
-                        <div class="hint">Adjunte un archivo legible en formato JPG, JPEG, PNG o PDF. Tamaño máximo permitido: 2 MB.</div>
+                        <div class="hint">Adjunte un archivo legible en formato JPG, JPEG, PNG o PDF. Tamaño máximo permitido: 1 MB.</div>
                     </div>
                 </div>
 

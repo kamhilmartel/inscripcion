@@ -26,7 +26,7 @@ class InscripcionController extends Controller
         'celular' => ['required', 'string', 'max:20'],
         'dni' => ['required', 'digits:8', 'unique:inscripciones,dni'],
         'grado_academico' => ['required', 'in:Bachiller,Titulado'],
-        'voucher' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
+        'voucher' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:1024'],
     ]);
 
     try {
